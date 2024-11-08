@@ -1,7 +1,9 @@
 let company = {
   sales: [{name: 'John', salary: 100}, {name: 'Alice', salary: 100}],
+  bdsm: [{name: 'Anna', salary: 100}],
   development: {
     web: [{name: 'Peter', salary: 100}, {name: 'Alex', salary: 100}],
+    back: [{name: 'Alex', salary: 100}, {name: 'Ivan', salary: 100}],
     internals: [{name: 'Jack', salary: 100}]
   }
 };
