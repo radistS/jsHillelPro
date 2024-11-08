@@ -5,6 +5,10 @@ let company = {
     web: [{name: 'Peter', salary: 100}, {name: 'Alex', salary: 100}],
     back: [{name: 'Alex', salary: 100}, {name: 'Ivan', salary: 100}],
     internals: [{name: 'Jack', salary: 100}]
+  },
+  qa: {
+    manual: [{name: 'm1', salary: 100}, {name: 'm2', salary: 100}],
+    auto: [{name: 'a1', salary: 100}, {name: 'a2', salary: 100}],
   }
 };
 
