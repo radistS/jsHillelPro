@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Приховати/Відкрити список</title>
+  <style>
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    body {
+      font-family: "Arial Narrow", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    li a {
+      text-decoration: none;
+      color: red;
+    }
+
+    li a:hover {
+      text-decoration: underline;
+    }
+
+    #toggleButton {
+      margin: 10px 0;
+      font-family: "Arial Narrow", Arial, sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div>
+<h1 id ="status">Close</h1>
+<button id="toggleButton">Open/Close</button>
+</div>
+
+<ul id="linkList" style="display: none;">
+</ul>
+
+<script>
+  const toggleButton = document.getElementById('toggleButton');
+  const linkList = document.getElementById('linkList');
+  const status = document.getElementById('status');
+
+  toggleButton.addEventListener('click', () => {
+    if (linkList.style.display === 'none') {
+
+      linkList.style.display = 'block';
+
+      const listItem = document.createElement('li');
+      const newLink = document.createElement('a');
+
+      newLink.href = '#';
+      newLink.textContent = `link # ${linkList.children.length + 1}`;
+      listItem.appendChild(newLink);
+      linkList.appendChild(listItem);
+      status.textContent = 'Open'
+      toggleButton.textContent = 'Open'
+    } else {
+      linkList.style.display = 'none';
+      status.textContent = 'Close'
+      toggleButton.textContent = 'Close'
+    }
+  });
+</script>
+</body>
+</html>

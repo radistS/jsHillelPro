@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random image</title>
+    <style>
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 500px;
+            height: auto;
+        }
+        #timer {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="timer">5</div>
+<img id="image" alt="Random image">
+
+<script>
+    const imageCount = 5;
+    const imageElement = document.getElementById('image');
+    const timerElement = document.getElementById('timer');
+    let countdown = 5;
+
+    function updateImage() {
+        const randomIndex = Math.floor(Math.random() * imageCount) + 1;
+        const randomImagePath = `${randomIndex}.jpg`;
+        imageElement.src = randomImagePath;
+    }
+
+    function updateTimer() {
+        countdown--;
+        timerElement.textContent = countdown;
+        if (countdown === 0) {
+            countdown = 5;
+            updateImage();
+        }
+    }
+
+    updateImage();
+
+    setInterval(updateTimer, 1000);
+</script>
+</body>
+</html>

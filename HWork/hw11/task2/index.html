@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Зміна кольору тексту</title>
+  <style>
+    #textBlock {
+      font-size: 20px;
+      color: black;
+      margin-bottom: 10px;
+    }
+    #colorToggleButton {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+<button id="colorToggleButton">Змінити колір</button>
+
+<script>
+  const button = document.getElementById('colorToggleButton');
+
+  let isColored = false;
+
+  button.addEventListener('click', () => {
+    if (isColored) {
+      button.style.color = 'black';
+    } else {
+      button.style.color = 'red';
+    }
+    isColored = !isColored;
+  });
+</script>
+</body>
+</html>

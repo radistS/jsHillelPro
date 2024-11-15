@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Приклад роботи з DOM</title>
+</head>
+<body>
+<div>
+  <input type="text" id="textInput" placeholder="Введіть текст">
+  <button id="logButton">Вивести текст</button>
+</div>
+
+<script>
+  document.getElementById('logButton').addEventListener('click', () => {
+    console.log( document.getElementById('textInput').value);
+  });
+</script>
+</body>
+</html>
