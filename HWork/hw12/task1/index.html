@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirect Example</title>
+  <script>
+    let userLink = "";
+
+    function enterLink() {
+      const input = prompt("Введіть посилання:", "http://");
+      if (input) {
+        try {
+          const url = new URL(input);
+          userLink = url.href;
+          document.getElementById("savedLink").value = userLink;
+          alert("Посилання збережено!");
+        } catch (error) {
+          alert("Невірний формат посилання. Спробуйте ще раз.");
+        }
+      }
+    }
+
+    function redirectToLink() {
+      if (userLink) {
+        window.location.href = userLink;
+      } else {
+        alert("Спочатку введіть посилання!");
+      }
+    }
+  </script>
+</head>
+<body>
+<button onclick="enterLink()">Ввести посилання</button>
+<button onclick="redirectToLink()">Перейти за посиланням</button>
+<br><br>
+<label for="savedLink">Збережене посилання:</label>
+<input type="text" id="savedLink" readonly style="width: 300px;">
+</body>
+</html>
