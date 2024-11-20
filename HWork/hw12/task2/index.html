@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Delegation Example</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const parentContainer = document.getElementById("button-container");
+
+      parentContainer.addEventListener("click", (event) => {
+        if (event.target.tagName === "BUTTON") {
+          alert(`You push button: ${event.target.textContent}`);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+<div id="button-container">
+  <button>B1</button>
+  <button>B2</button>
+  <button>B3</button>
+  <button>B4</button>
+</div>
+</body>
+</html>
