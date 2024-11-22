@@ -1,0 +1,84 @@
+body {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  background-color: #f0f8ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.form-container {
+  background: #e6f7ff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px; /* Фіксована ширина */
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #007acc;
+  margin-bottom: 20px;
+}
+
+h3 {
+  font-size: 1em;
+  color: #007acc;
+  margin: 20px 0 10px;
+}
+
+.form-field {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+input, textarea {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  width: calc(100% - 20px); /* Робить поля рівними */
+  padding: 10px;
+  border: 1px solid #b3d9ff;
+  border-radius: 5px;
+  background: #ffffff;
+  font-size: 1em;
+  box-sizing: border-box; /* Враховує padding */
+}
+
+textarea {
+  resize: none;
+  height: 80px;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #007acc;
+  background: #f0faff;
+}
+
+button {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 300;
+  background: #007acc;
+  color: white;
+  font-size: 1em;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Кнопка на всю ширину */
+  box-sizing: border-box;
+}
+
+button:hover {
+  background: #005f99;
+}
+
+.error {
+  color: red;
+  font-size: 0.85em;
+  margin-top: 5px;
+  text-align: left;
+}

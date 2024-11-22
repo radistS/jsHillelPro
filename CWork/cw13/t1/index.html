@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Форма з відправкою</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="form-container">
+  <h2>We would like to help you</h2>
+  <form id="contactForm">
+    <input type="text" name="name" placeholder="Name" required>
+    <textarea name="message" placeholder="Message" rows="4" required></textarea>
+    <input type="tel" name="phone" placeholder="Phone number" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <button type="submit">Send message</button>
+  </form>
+</div>
+<script>
+  const form = document.getElementById('contactForm');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    console.log("data:", data);
+    console.log("http: POST");
+    console.log("resource: /submit");
+
+    fetch('http://localhost:8080/api/v1/post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log("server response:", result);
+      alert("send ....");
+      form.reset();
+    })
+    .catch(error => {
+      console.error("server response:", error);
+      alert("error");
+    });
+  });
+</script>
+</body>
+</html>
