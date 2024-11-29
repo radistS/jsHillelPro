@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Validation</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .password-container {
+      padding: 30px;
+      border: 2px solid #007BFF;
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .password-container h3 {
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .password-input-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    input[type="password"],
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #007BFF;
+      border-radius: 5px;
+      width: 70%;
+      box-sizing: border-box;
+    }
+
+    .toggle-password,
+    .generate-password {
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .toggle-password:hover,
+    .generate-password:hover {
+      background-color: #0056b3;
+    }
+
+    /* Список валідацій */
+    .validation-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .validation-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .status-icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .valid-icon {
+      color: green;
+    }
+
+    .invalid-icon {
+      color: red;
+    }
+
+    .validation-text {
+      font-family: monospace;
+      font-size: 14px;
+    }
+
+    .valid-text {
+      color: green;
+    }
+
+    .invalid-text {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<div class="password-container">
+  <h3>Введіть пароль:</h3>
+  <div class="password-input-container">
+    <input type="password" id="password" placeholder="Введіть пароль" />
+    <button class="toggle-password" id="togglePassword">Показати</button>
+    <button class="generate-password" id="generatePassword">Згенерувати</button>
+  </div>
+  <ul class="validation-list">
+    <li id="uppercase" class="validation-item">
+      <span class="status-icon invalid-icon">❌</span>
+      <span class="validation-text invalid-text">Містить одну велику літеру</span>
+    </li>
+    <li id="digit" class="validation-item">
+      <span class="status-icon invalid-icon">❌</span>
+      <span class="validation-text invalid-text">Містить одну цифру</span>
+    </li>
+    <li id="punctuation" class="validation-item">
+      <span class="status-icon invalid-icon">❌</span>
+      <span class="validation-text invalid-text">Містить один знак пунктуації</span>
+    </li>
+    <li id="length" class="validation-item">
+      <span class="status-icon invalid-icon">❌</span>
+      <span class="validation-text invalid-text">Має не менше 8 символів</span>
+    </li>
+  </ul>
+</div>
+<script>
+  const togglePasswordButton = document.getElementById('togglePassword');
+  const passwordInput = document.getElementById('password');
+  const generatePasswordButton = document.getElementById('generatePassword');
+
+  togglePasswordButton.addEventListener('click', function () {
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    togglePasswordButton.textContent = type === 'password' ? 'Показати' : 'Сховати';
+  });
+
+  generatePasswordButton.addEventListener('click', function () {
+    const generatedPassword = generatePassword();
+    passwordInput.value = generatedPassword;
+    passwordInput.dispatchEvent(new Event('input'));
+  });
+
+  function generatePassword() {
+    const length = 12;
+    const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowerCase = 'abcdefghijklmnopqrstuvwxyz';
+    const digits = '0123456789';
+    const symbols = '!@#$%^&*()_+{}:"<>?|[];,./`~';
+    const allChars = upperCase + lowerCase + digits + symbols;
+
+    let password = '';
+    password += upperCase[Math.floor(Math.random() * upperCase.length)];
+    password += digits[Math.floor(Math.random() * digits.length)];
+    password += symbols[Math.floor(Math.random() * symbols.length)];
+
+    while (password.length < length) {
+      password += allChars[Math.floor(Math.random() * allChars.length)];
+    }
+
+    return password
+    .split('')
+    .sort(() => Math.random() - 0.5)
+    .join('');
+  }
+
+
+  document.getElementById('password').addEventListener('input', function () {
+    const password = this.value;
+
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    const hasPunctuation = /[!@#$%^&*(),.?"]/.test(password);
+    const hasValidLength = password.length >= 8;
+
+    updateValidation('uppercase', hasUppercase, 'Містить одну велику літеру');
+    updateValidation('digit', hasDigit, 'Містить одну цифру');
+    updateValidation('punctuation', hasPunctuation, 'Містить один знак пунктуації');
+    updateValidation('length', hasValidLength, 'Має не менше 8 символів');
+  });
+
+  function updateValidation(id, isValid, text) {
+    const element = document.getElementById(id);
+    const icon = element.querySelector('.status-icon');
+    const validationText = element.querySelector('.validation-text');
+
+    if (isValid) {
+      icon.textContent = '✅';
+      icon.classList.add('valid-icon');
+      icon.classList.remove('invalid-icon');
+      validationText.textContent = text;
+      validationText.classList.add('valid-text');
+      validationText.classList.remove('invalid-text');
+    } else {
+      icon.textContent = '❌';
+      icon.classList.add('invalid-icon');
+      icon.classList.remove('valid-icon');
+      validationText.textContent = text;
+      validationText.classList.add('invalid-text');
+      validationText.classList.remove('valid-text');
+    }
+  }
+</script>
+</body>
+</html>

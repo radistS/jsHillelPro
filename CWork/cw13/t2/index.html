@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Повзунок зміни розміру</title>
+  <style>
+    #image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    #resizable-image {
+      transition: all 0.2s ease;
+    }
+  </style>
+</head>
+<body>
+<div id="image-container">
+  <input type="range" id="slider" min="50" max="800" value="400">
+  <img id="resizable-image" src="2.jpg" alt="Example Image" width="400">
+</div>
+<script>
+  const slider = document.getElementById('slider');
+  const image = document.getElementById('resizable-image');
+
+  slider.addEventListener('input', () => {
+    const size = slider.value;
+    image.style.width = `${size}px`;
+    image.style.height = 'auto';
+  });
+</script>
+</body>
+</html>
