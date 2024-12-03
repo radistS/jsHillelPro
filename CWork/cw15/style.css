@@ -1,0 +1,215 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f8ff;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #0366d6;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: #0366d6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+button:hover {
+  background-color: #024a94;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #0366d6;
+  color: white;
+}
+
+td .actions i {
+  font-size: 18px;
+  margin-right: 10px;
+  color: #0366d6;
+  cursor: pointer;
+}
+
+td .actions i:hover {
+  color: #024a94;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f0f8ff;
+  border-radius: 10px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 400px;
+  text-align: center;
+}
+
+.modal input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  width: 45%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-buttons button#save-user {
+  background-color: #0366d6;
+  color: white;
+}
+
+.modal-buttons button#save-user:hover {
+  background-color: #024a94;
+}
+
+.modal-buttons button#cancel-popup {
+  background-color: #d9534f;
+  color: white;
+}
+
+.modal-buttons button#cancel-popup:hover {
+  background-color: #c9302c;
+}
+
+.modal-header {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #0366d6;
+  text-align: center;
+}
+
+.view-popup {
+  background-color: #0366d6;
+  color: white;
+  padding: 20px;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.view-popup pre {
+  background-color: white;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+.overlay, .modal {
+  display: none;
+}
+
+.overlay.active, .modal.active {
+  display: block;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f0f8ff;
+  border-radius: 10px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 400px;
+  text-align: center;
+}
+
+pre {
+  text-align: left;
+  font-family: monospace;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #333;
+}
+
+.key {
+  color: #d73a49; /* Червоний для ключів */
+}
+
+.string {
+  color: #032f62; /* Темно-синій для строк */
+}
+
+.number {
+  color: #005cc5; /* Синій для чисел */
+}
+
+.boolean {
+  color: #22863a; /* Зелений для булевих значень */
+}
+
+.null {
+  color: #6a737d; /* Сірий для null */
+}

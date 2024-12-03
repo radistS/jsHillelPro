@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .buttons {
+      display: flex;
+      gap: 5px;
+    }
+    .delete-button {
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 3px;
+    }
+    .delete-button:hover {
+      background-color: darkred;
+    }
+    .done-button {
+      background-color: #3939f3;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 3px;
+    }
+    .done-button:hover {
+      background-color: #252575;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const taskList = document.getElementById("task-list");
+      const taskInput = document.getElementById("task-input");
+      const addButton = document.getElementById("add-task");
+
+      const loadTasks = () => {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        taskList.innerHTML = "";
+        tasks.forEach((task) => {
+          const taskItem = createTaskItem(task.text, task.completed);
+          taskList.appendChild(taskItem);
+        });
+      };
+
+      const saveTasks = () => {
+        const tasks = [];
+        taskList.querySelectorAll("li").forEach((taskItem) => {
+          const text = taskItem.querySelector("span").textContent;
+          const completed = taskItem.querySelector("span").classList.contains("completed");
+          tasks.push({ text, completed });
+        });
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      };
+
+      const createTaskItem = (text, completed = false) => {
+        const newTask = document.createElement("li");
+
+        const taskTextSpan = document.createElement("span");
+        taskTextSpan.textContent = text;
+        if (completed) {
+          taskTextSpan.classList.add("completed");
+        }
+
+        const buttonsContainer = document.createElement("div");
+        buttonsContainer.classList.add("buttons");
+
+        const doneButton = document.createElement("button");
+        doneButton.textContent = "Done";
+        doneButton.classList.add("done-button");
+
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("delete-button");
+
+        buttonsContainer.appendChild(doneButton);
+        buttonsContainer.appendChild(deleteButton);
+
+        newTask.appendChild(taskTextSpan);
+        newTask.appendChild(buttonsContainer);
+
+        if (completed) {
+          buttonsContainer.classList.add("hidden");
+        }
+
+        return newTask;
+      };
+
+      addButton.addEventListener("click", () => {
+        const taskText = taskInput.value.trim();
+        if (taskText) {
+          const newTask = createTaskItem(taskText);
+          taskList.appendChild(newTask);
+          saveTasks();
+          taskInput.value = "";
+        } else {
+          alert("Please put task description ...");
+        }
+      });
+
+      taskList.addEventListener("click", (event) => {
+        if (event.target.classList.contains("delete-button")) {
+          const taskItem = event.target.closest("li");
+          taskList.removeChild(taskItem);
+          saveTasks();
+        }
+
+        if (event.target.classList.contains("done-button")) {
+          const taskItem = event.target.closest("li");
+          const taskText = taskItem.querySelector("span");
+          const buttonsContainer = taskItem.querySelector(".buttons");
+
+          taskText.classList.toggle("completed");
+
+          if (taskText.classList.contains("completed")) {
+            buttonsContainer.classList.add("hidden");
+          } else {
+            buttonsContainer.classList.remove("hidden");
+          }
+          saveTasks();
+        }
+      });
+
+      loadTasks();
+    });
+  </script>
+</head>
+<body>
+<h1>To-Do List</h1>
+<div>
+  <input type="text" id="task-input" placeholder="Add task description" />
+  <button id="add-task">Add task ...</button>
+</div>
+<ul id="task-list">
+
+</ul>
+</body>
+</html>
