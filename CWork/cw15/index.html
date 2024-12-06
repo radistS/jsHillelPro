@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User List</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>User list</h1>
+  <button id="open-add-popup">Add User</button>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Age</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="user-table">
+    </tbody>
+  </table>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="add-edit-popup">
+    <div class="modal-header">User Details</div>
+    <form id="user-form">
+      <input type="hidden" id="user-id" />
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="text" id="phone" placeholder="Phone" required />
+      <input type="number" id="age" placeholder="Age" required />
+      <div class="modal-buttons">
+        <button type="button" id="cancel-popup">Cancel</button>
+        <button type="submit" id="save-user">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal view-popup" id="view-popup">
+    <div class="modal-header">User Details</div>
+    <div class="modal-body" id="view-data"></div>
+    <button type="button" id="close-view-popup">Close</button>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
