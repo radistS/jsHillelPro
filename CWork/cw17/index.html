@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Валідація форми</title>
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box; /* Гарантує правильне врахування padding */
+    }
+
+    h2 {
+      text-align: center;
+      color: #e91e63;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-size: 14px;
+      color: #333333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, textarea, button {
+      width: calc(100% - 30px); /* Врахування padding */
+      padding: 10px 15px;
+      font-size: 14px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+      box-sizing: border-box; /* Врахування padding у ширину */
+    }
+
+    textarea {
+      resize: none; /* Забороняє зміну розміру текстового поля */
+    }
+
+    input:focus, textarea:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    input.error, textarea.error {
+      border-color: #e91e63;
+      background-color: #fff5f5;
+    }
+
+    input.success, textarea.success {
+      border-color: #4caf50;
+      background-color: #f0fff0;
+    }
+
+    .error-message {
+      font-size: 12px;
+      color: #e91e63;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+<form id="helpForm" method="POST" action="/submit">
+  <h2>Ми хотіли б вам допомогти</h2>
+  <label for="name">Ім'я</label>
+  <input type="text" id="name" name="name" data-validate="required" placeholder="Ім'я" />
+  <div class="error-message"></div>
+
+  <label for="message">Повідомлення</label>
+  <textarea id="message" name="message" data-validate="required|minLength:5" placeholder="Повідомлення"></textarea>
+  <div class="error-message"></div>
+
+  <label for="phone">Номер телефону</label>
+  <input type="text" id="phone" name="phone"  placeholder="Номер телефону" />
+  <div class="error-message"></div>
+
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" data-validate="required|email" placeholder="Email" />
+  <div class="error-message"></div>
+
+  <label for="address">Адреса</label>
+  <input type="text" id="address" name="address" placeholder="Адреса" />
+  <div class="error-message"></div>
+
+  <button type="submit">Відправити</button>
+</form>
+
+<script>
+  class FormValidator {
+    constructor(form) {
+      this.form = form;
+      this.fields = Array.from(this.form.elements);
+      this.SUCCESS_CLASS_NAME = "success";
+      this.ERROR_CLASS_NAME = "error";
+      this.init();
+    }
+
+    init() {
+      this.form.addEventListener("submit", (event) => this.handleSubmit(event));
+      this.fields.forEach((field) => {
+        field.addEventListener("input", () => this.validateField(field));
+      });
+    }
+
+    validateRequired(field) {
+      return field.value.trim() !== "" ? "" : "Це поле є обов'язковим.";
+    }
+
+    validateMinLength(field, length) {
+      return field.value.trim().length >= length
+          ? ""
+          : `Мінімальна довжина: ${length} символів.`;
+    }
+
+    validateEmail(field) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(field.value) ? "" : "Введіть валідний email.";
+    }
+
+    validateField(field) {
+      const validations = field.dataset.validate?.split("|") || [];
+      let error = "";
+
+      validations.forEach((validation) => {
+        if (validation === "required") {
+          error = this.validateRequired(field);
+        } else if (validation.startsWith("minLength")) {
+          const length = parseInt(validation.split(":")[1]);
+          error = this.validateMinLength(field, length);
+        } else if (validation === "email") {
+          error = this.validateEmail(field);
+        }
+
+        if (error) return;
+      });
+
+      this.showValidationResult(field, error);
+      return !error;
+    }
+
+    showValidationResult(field, error) {
+      const errorElement = field.nextElementSibling;
+      if (error) {
+        errorElement.textContent = error;
+        field.classList.add(this.ERROR_CLASS_NAME);
+        field.classList.remove(this.SUCCESS_CLASS_NAME);
+      } else {
+        errorElement.textContent = "";
+        field.classList.remove(this.ERROR_CLASS_NAME);
+        field.classList.add(this.SUCCESS_CLASS_NAME);
+      }
+    }
+
+    handleSubmit(event) {
+      event.preventDefault();
+      let isValid = true;
+
+      this.fields.forEach((field) => {
+        if (!this.validateField(field)) {
+          isValid = false;
+        }
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#helpForm");
+    if (form) {
+      new FormValidator(form);
+    }
+  });
+
+
+</script>
+
+</body>
+</html>
