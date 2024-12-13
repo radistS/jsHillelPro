@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .timer {
+      font-size: 3rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .timers-list {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      list-style: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="timer">
+  <img src="https://cdn-icons-png.flaticon.com/512/44/44386.png" alt="Timer Icon" width="50" height="50">
+  <span id="timer">00:00</span>
+</div>
+
+<div class="controls" id="controls">
+  <input type="number" id="timeInput" placeholder="Enter seconds" min="1" />
+  <button id="startButton">Run Timer</button>
+</div>
+
+<ul class="timers-list" id="timersList">
+  <h3>Timers</h3>
+</ul>
+
+<script>
+  const timerDisplay = document.getElementById('timer');
+  const timeInput = document.getElementById('timeInput');
+  const startButton = document.getElementById('startButton');
+  const timersList = document.getElementById('timersList');
+  const controls = document.getElementById('controls');
+
+  let timeLeft = 0;
+  let timerInterval;
+  let elapsed = 0;
+
+  function updateTimerDisplay(time) {
+    const minutes = Math.floor(time / 60).toString().padStart(2, '0');
+    const seconds = (time % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  }
+
+  function startTimer() {
+    const inputTime = parseInt(timeInput.value, 10);
+    if (isNaN(inputTime) || inputTime <= 0) {
+      alert('Please enter a valid number of seconds.');
+      return;
+    }
+
+    timeLeft = inputTime;
+    elapsed = 0;
+
+    if (timerInterval) clearInterval(timerInterval);
+
+    controls.style.display = 'none';
+
+    timerInterval = setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        elapsed++;
+        timerDisplay.textContent = updateTimerDisplay(timeLeft);
+      } else {
+        clearInterval(timerInterval);
+        timerDisplay.textContent = "Time's up!";
+
+        const timerItem = document.createElement('li');
+        timerItem.textContent = `Elapsed Time: ${updateTimerDisplay(elapsed)}`;
+        timersList.appendChild(timerItem);
+
+        controls.style.display = 'flex';
+      }
+    }, 1000);
+
+    timeInput.value = '';
+  }
+
+  startButton.addEventListener('click', startTimer);
+</script>
+</body>
+</html>
