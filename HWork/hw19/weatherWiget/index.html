@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Widget</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <div id="city-image">
+    <img src="city-image.jpg" alt="City View">
+  </div>
+  <div id="weather-widget">
+    <p id="location"></p>
+    <p id="temperature"><img src="temperature.png" alt="Temperature Icon">Temperature: </p>
+    <p id="humidity"><img src="humidity.png" alt="Humidity Icon">Humidity: </p>
+    <p id="pressure"><img src="gauge.png" alt="Pressure Icon">Pressure: </p>
+    <p id="wind"><img src="wind.png" alt="Wind Icon">Wind: </p>
+    <p id="update-time"></p>
+    <button onclick="fetchWeather()">Update</button>
+  </div>
+</div>
+
+<script src="weather.js"></script>
+</body>
+</html>

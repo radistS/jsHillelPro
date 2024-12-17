@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Курсы валют</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .exchange-rate {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+    #spinner-container {
+      display: none;
+      position: relative;
+      width: 30px;
+      height: 30px;
+      margin: 20px 0;
+    }
+    #spinner {
+      width: 100%;
+      height: 100%;
+      border: 10px solid rgba(0, 0, 0, 0.1);
+      border-top: 10px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    #countdown {
+      position: absolute;
+      top: 50%;
+      left: 65%;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+<div id="spinner-container">
+  <div id="spinner"></div>
+  <div id="countdown"></div>
+</div>
+<div class="exchange-rate" id="usdRate">Загрузка курса USD...</div>
+
+<script>
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function showSpinnerWithCountdown(duration) {
+    const spinnerContainer = document.getElementById('spinner-container');
+    const countdown = document.getElementById('countdown');
+    let remainingTime = duration / 1000; // Оставшееся время в секундах
+
+    spinnerContainer.style.display = 'block';
+    countdown.textContent = remainingTime;
+
+    const timerInterval = setInterval(() => {
+      remainingTime -= 1;
+      countdown.textContent = remainingTime;
+    }, 1000);
+
+    await sleep(duration);
+
+    clearInterval(timerInterval);
+    spinnerContainer.style.display = 'none';
+  }
+
+  const fetchExchangeRates = () => {
+    showSpinnerWithCountdown(5000)
+    .then(() => fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json'))
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('usdRate').textContent = `Курс USD: ${data.find(rate => rate.cc === 'USD').rate.toFixed(2)} UAH`;
+    })
+    .catch(error => {
+      document.getElementById('usdRate').textContent = 'Не удалось загрузить курс USD';
+    });
+  };
+
+
+  const fetchExchangeRates = async () => {
+    try {
+      const response = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+      const data = await response.json();
+      const usdRate = data.find(rate => rate.cc === 'USD').rate;
+      document.getElementById('usdRate').textContent = `Курс USD: ${usdRate.toFixed(2)} UAH`;
+    } catch (error) {
+      document.getElementById('usdRate').textContent = 'Не удалось загрузить курс USD';
+    }
+  };
+
+
+  setInterval(function() {
+    location.reload();
+  }, 15000);
+
+  fetchExchangeRates();
+</script>
+</body>
+</html>

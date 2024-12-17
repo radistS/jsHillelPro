@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лічильник часу</title>
+  <style>
+    #counter {
+      font-size: 2em;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    #toggleButton {
+      padding: 10px 20px;
+      font-size: 1em;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #toggleButton.start {
+      background-color: green;
+    }
+    #toggleButton.stop {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+<div id="counter">00:00:00</div>
+<button id="toggleButton" class="start">Старт</button>
+
+<script>
+  let totalSeconds = 0;
+  let intervalId = null;
+
+  function formatTime(seconds) {
+    const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const secs = String(seconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${secs}`;
+  }
+
+  function updateCounter() {
+    totalSeconds += 1;
+    document.getElementById('counter').innerText = formatTime(totalSeconds);
+  }
+
+  function toggleCounter() {
+    const button = document.getElementById('toggleButton');
+    if (intervalId === null) {
+      intervalId = setInterval(updateCounter, 1000);
+      button.innerText = 'Стоп';
+      button.classList.remove('start');
+      button.classList.add('stop');
+    } else {
+      clearInterval(intervalId);
+      intervalId = null;
+      button.innerText = 'Старт';
+      button.classList.remove('stop');
+      button.classList.add('start');
+    }
+  }
+
+  document.getElementById('toggleButton').addEventListener('click', toggleCounter);
+</script>
+</body>
+</html>
