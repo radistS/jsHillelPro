@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    .task-title {
+      flex-grow: 1;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+    .buttons {
+      display: flex;
+      gap: 5px;
+    }
+    /* Встановлення ширини модального вікна */
+    .modal-dialog {
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+<h1>To-Do List</h1>
+<div>
+  <input type="text" id="task-title-input" placeholder="Task Title" />
+  <input type="text" id="task-desc-input" placeholder="Task Description" />
+  <button id="add-task" class="btn btn-primary">Add task</button>
+</div>
+<ul id="task-list"></ul>
+
+<!-- Модальне вікно -->
+<div class="modal fade" id="taskModal" tabindex="-1" role="dialog" aria-labelledby="taskModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="modal-task-desc"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    const loadTasks = () => {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      $("#task-list").empty();
+      $.each(tasks, function(i, task) {
+        const taskItem = $('<li>');
+        const taskTitle = $('<span>').addClass('task-title').text(task.title);
+        if (task.completed) {
+          taskTitle.addClass('completed');
+        }
+
+        const buttons = $('<div>').addClass('buttons');
+        const doneButton = $('<button>').addClass('done-button btn btn-success').text('Done');
+        if (!task.completed) {
+          doneButton.on('click', function() {
+            taskTitle.addClass('completed');
+            $(this).hide();
+            saveTasks();
+          });
+          buttons.append(doneButton);
+        }
+
+        const deleteButton = $('<button>').addClass('delete-button btn btn-danger').text('Delete').on('click', function() {
+          taskItem.remove();
+          saveTasks();
+        });
+
+        const titleButton = $('<button>').addClass('btn btn-info').text('Details').on('click', function() {
+          $('#taskModalLabel').text(task.title);
+          $('#modal-task-title').text(task.title);
+          $('#modal-task-desc').text(task.description);
+          $("#taskModal").modal('show');
+        });
+
+        buttons.append(deleteButton, titleButton);
+        taskItem.append(taskTitle).append(buttons);
+        $("#task-list").append(taskItem);
+      });
+    };
+
+    const saveTasks = () => {
+      const tasks = [];
+      $("#task-list li").each(function() {
+        const title = $(this).find('.task-title').text();
+        const description = $(this).data('description');
+        const completed = $(this).find('.task-title').hasClass('completed');
+        tasks.push({ title, description, completed });
+      });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    };
+
+    $("#add-task").on('click', function() {
+      const taskTitle = $("#task-title-input").val().trim();
+      const taskDescription = $("#task-desc-input").val().trim();
+      if (taskTitle && taskDescription) {
+        const newTask = $('<li>');
+        const taskTitleElement = $('<span>').addClass('task-title').text(taskTitle);
+        newTask.data('description', taskDescription);
+
+        const buttons = $('<div>').addClass('buttons');
+        const doneButton = $('<button>').addClass('done-button btn btn-success').text('Done').on('click', function() {
+          taskTitleElement.addClass('completed');
+          $(this).hide();
+          saveTasks();
+        });
+
+        const deleteButton = $('<button>').addClass('delete-button btn btn-danger').text('Delete').on('click', function() {
+          newTask.remove();
+          saveTasks();
+        });
+
+        const titleButton = $('<button>').addClass('btn btn-info').text('Details').on('click', function() {
+          $('#taskModalLabel').text(taskTitle);
+          $('#modal-task-title').text(taskTitle);
+          $('#modal-task-desc').text(taskDescription);
+          $("#taskModal").modal('show');
+        });
+
+        buttons.append(doneButton, deleteButton, titleButton);
+        newTask.append(taskTitleElement).append(buttons);
+        $("#task-list").append(newTask);
+        saveTasks();
+        $("#task-title-input").val('');
+        $("#task-desc-input").val('');
+      } else {
+        alert("Please fill both title and description ...");
+      }
+    });
+
+    loadTasks();
+  });
+</script>
+</body>
+</html>

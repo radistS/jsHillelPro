@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>List</title>
+  <style>
+    button {
+      margin: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+  </style>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+<button id="hideButton">Hide</button>
+<button id="showButton">Show</button>
+
+<ul id="myList">
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+  <li>Item 4</li>
+</ul>
+
+<script>
+  $(document).ready(function() {
+    $("#hideButton").click(function() {
+      $("#myList").hide();
+    });
+
+    $("#showButton").click(function() {
+      $("#myList").show();
+    });
+  });
+</script>
+</body>
+</html>
+
