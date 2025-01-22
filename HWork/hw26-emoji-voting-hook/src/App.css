@@ -1,0 +1,57 @@
+.emoji-voter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.emoji-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.emoji-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 72px;
+}
+
+.emoji-button:focus {
+  outline: none;
+}
+
+.vote-count {
+  margin-top: 5px;
+}
+
+.button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.results {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  background: #f4f4f4;
+  border-radius: 5px;
+}

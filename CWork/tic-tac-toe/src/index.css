@@ -1,0 +1,43 @@
+/* Стилі для центрування та видалення горизонтальних проміжків */
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 50px);
+  gap: 0;
+}
+
+.square {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 47px;
+}
+
+.game-info {
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.square:not(:nth-child(4n)) {
+  border-right: none;
+}
+
+.square:nth-child(-n+4) {
+  border-top: none;
+}
