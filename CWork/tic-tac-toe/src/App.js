@@ -1,65 +1,61 @@
-import React, { useState } from 'react';
-import Board from './Board';
+import React, { useState } from "react";
+import { Form, Field } from "react-final-form";
 
-function App() {
-  const [xIsNext, setXIsNext] = useState(true);
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [stepNumber, setStepNumber] = useState(0);
+const TodoApp = () => {
+  const [todos, setTodos] = useState([]);
 
-  const handleClick = (i) => {
-    const historyPoint = history.slice(0, stepNumber + 1);
-    const current = historyPoint[historyPoint.length - 1];
-    const squares = [...current];
-    if (calculateWinner(squares) || squares[i]) {
-      return;
+  const handleAddTodo = (values, form) => {
+    if (values.todo.trim()) {
+      setTodos([...todos, { id: Date.now(), text: values.todo, completed: false }]);
+      form.reset();
     }
-    squares[i] = xIsNext ? 'X' : 'O';
-    setHistory([...historyPoint, squares]);
-    setStepNumber(historyPoint.length);
-    setXIsNext(!xIsNext);
   };
 
-  const resetBoard = () => {
-    setHistory([Array(9).fill(null)]);
-    setStepNumber(0);
-    setXIsNext(true);
+  const handleDeleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  const current = history[stepNumber];
-  const winner = calculateWinner(current);
-
+  const handleToggleComplete = (id) => {
+    setTodos(
+        todos.map((todo) =>
+            todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        )
+    );
+  };
 
   return (
-      <div className="game">
-        <div className="game-board">
-          <Board squares={current} onClick={handleClick} />
-        </div>
-        <div className="game-info">
-          <div>{winner ? 'Winner: ' + winner : 'Next player: ' + (xIsNext ? 'X' : 'O')}</div>
-          <button onClick={resetBoard}>Reset Board</button>
-        </div>
+      <div >
+        <h1 >TODO List with React Final Form</h1>
+        <Form
+            onSubmit={handleAddTodo}
+            render={({ handleSubmit, form }) => (
+                <form onSubmit={(event) => handleSubmit(event, form)}>
+                  <Field name="todo">
+                    {({ input, meta }) => (
+                        <div className="flex-1">
+                          <input {...input} type="text" placeholder="Enter new task..."/>
+                          {meta.error && meta.touched && (<span >{meta.error}</span>)}
+                        </div>
+                    )}
+                  </Field>
+                  <button type="submit">Add</button>
+                </form>
+            )}
+        />
+
+        <ul >
+          {todos.map((todo) => (
+              <li key={todo.id}>
+                <span>{todo.text}</span>
+                <div>
+                  <button onClick={() => handleToggleComplete(todo.id)}>{todo.completed ? "Undo" : "Complete"}</button>
+                  <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+                </div>
+              </li>
+          ))}
+        </ul>
       </div>
   );
-}
+};
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
-
-export default App;
+export default TodoApp;
