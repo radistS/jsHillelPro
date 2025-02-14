@@ -6,7 +6,6 @@ function Todo() {
   const [task, setTask] = useState('');
   const [todos, setTodos] = useState([]);
 
-  // Функція для додавання нового завдання
   const handleAddTask = () => {
     if (task.trim() !== '') {
       const newTask = {
@@ -19,7 +18,6 @@ function Todo() {
     }
   };
 
-  // Функція для перемикання стану виконання завдання
   const handleToggleTask = (id) => {
     const updatedTodos = todos.map((item) =>
         item.id === id ? { ...item, completed: !item.completed } : item
@@ -27,7 +25,6 @@ function Todo() {
     setTodos(updatedTodos);
   };
 
-  // Функція для видалення завдання
   const handleDeleteTask = (id) => {
     setTodos(todos.filter((item) => item.id !== id));
   };
